@@ -6,15 +6,15 @@ class User(Base):
     __tablename__ = 'users'
     
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
+    name = Column(String, unique=True, index=True, nullable=False)
     ratings = relationship("Rating", back_populates="user")
 
 class Movie(Base):
     __tablename__ = "movies"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    genre = Column(String, index=True)
+    title = Column(String, index=True, nullable=False)
+    genre = Column(String, index=True, nullable=False)
     director = Column(String)
 
     ratings = relationship("Rating", back_populates="movie")
@@ -26,7 +26,7 @@ class Rating(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     movie_id = Column(Integer, ForeignKey("movies.id"))
-    score = Column(Float)
+    score = Column(Float, nullable=False)
 
     user = relationship("User", back_populates="ratings")
     movie = relationship("Movie", back_populates="ratings")
