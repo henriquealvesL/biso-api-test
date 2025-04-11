@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from src import models, schemas
 
-def create_user(db: Session, user: schemas.UserSchema):
+def create_user(db: Session, user: schemas.UserBase):
   if db.query(models.User).filter(func.lower(models.User.name) == user.name.lower()).first():
     raise ValueError(f"User with name '{user.name}' already exists")
   
@@ -12,7 +12,7 @@ def create_user(db: Session, user: schemas.UserSchema):
   db.refresh(db_user)
   return db_user
 
-def update_user(db: Session, user_id: int, user_update: schemas.UserSchema):
+def update_user(db: Session, user_id: int, user_update: schemas.UserBase):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if not db_user:
         return None

@@ -1,18 +1,24 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 
-class UserSchema(BaseModel):
-  id: int
+class UserBase(BaseModel):
   name: str
 
+class UserOut(UserBase):
+  id: int
 class UserList(BaseModel):
-  users: list[UserSchema]
+  users: list[UserOut]
 
-class MovieSchema(BaseModel):
+class MovieBase(BaseModel):
   title: str
-  description: str
   genre: str
   director: Optional[str]
+
+class MovieOut(MovieBase):
+  id: int
+
+class MovieList(BaseModel):
+  movies: list[MovieOut]
 
 class RatingSchema(BaseModel):
   user_id: int

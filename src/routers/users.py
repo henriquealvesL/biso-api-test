@@ -10,15 +10,15 @@ router = APIRouter(
     tags=["users"]
 )
 
-@router.post("/", response_model=schemas.UserSchema, status_code=HTTPStatus.CREATED)
-def create_user(user: schemas.UserSchema, db: Session = Depends(get_session)):
+@router.post("/", response_model=schemas.UserBase, status_code=HTTPStatus.CREATED)
+def create_user(user: schemas.UserBase, db: Session = Depends(get_session)):
     try:
        return users.create_user(db, user)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     
-@router.put("/{user_id}", response_model=schemas.UserSchema)
-def update_user(user_id: int, user_update: schemas.UserSchema, db: Session = Depends(get_session)):
+@router.put("/{user_id}", response_model=schemas.UserBase)
+def update_user(user_id: int, user_update: schemas.UserBase, db: Session = Depends(get_session)):
     try:
         updated_user = users.update_user(db, user_id, user_update)
     except ValueError as e:
@@ -36,7 +36,7 @@ def delete_user(user_id: int, db: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="User not found")
 
 
-@router.get("/{user_id}", response_model=schemas.UserSchema)
+@router.get("/{user_id}", response_model=schemas.UserOut)
 def read_user(user_id: int, db: Session = Depends(get_session)):
     db_user = users.get_user(db, user_id=user_id)
     if db_user is None:
