@@ -4,6 +4,9 @@ from typing import Optional
 class UserSchema(BaseModel):
   name: str
 
+class UserList(BaseModel):
+  users: list[UserSchema]
+
 class MovieSchema(BaseModel):
   title: str
   description: str

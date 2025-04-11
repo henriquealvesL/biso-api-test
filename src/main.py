@@ -1,8 +1,6 @@
 from fastapi import FastAPI
+from src.routers import users
 
 app = FastAPI()
 
-
-@app.get("/filmes")
-def read_movies():
-    return ["Avengers", "Now you see me"]
+app.include_router(users.router)
