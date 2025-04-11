@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class UserSchema(BaseModel):
+  id: int
   name: str
 
 class UserList(BaseModel):
