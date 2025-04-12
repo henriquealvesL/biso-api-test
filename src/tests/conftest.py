@@ -12,7 +12,7 @@ engine = create_engine(
 )
 TestingSessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def test_db():
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
@@ -22,9 +22,17 @@ def test_db():
         db.close()
         Base.metadata.drop_all(bind=engine)
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def client(test_db):
     def override_get_db():
         yield test_db
     app.dependency_overrides[get_session] = override_get_db
     return TestClient(app)
+
+@pytest.fixture()
+def create_movie(client):
+    return client.post("/filmes/", json={
+        "title": "Inception",
+        "genre": "Sci-Fi",
+        "director": "Christopher Nolan"
+    }).json()
