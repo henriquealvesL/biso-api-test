@@ -38,14 +38,14 @@ def delete_user(user_id: int, db: Session = Depends(get_session)):
 
 @router.get("/{user_id}", response_model=schemas.UserOut)
 def read_user(user_id: int, db: Session = Depends(get_session)):
-    db_user = users.get_user(db, user_id=user_id)
+    db_user = users.read_user(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
 @router.get("/", response_model=schemas.UserList, status_code=HTTPStatus.OK)
 def read_users(db: Session = Depends(get_session)):
-    users_db = users.get_users(db)
+    users_db = users.read_users(db)
     return {"users": users_db}
 
 
