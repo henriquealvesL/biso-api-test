@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from src.crud import users
+from src.crud import users, ratings
 from src.database import get_session
 from http import HTTPStatus
 from src import schemas
@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["users"]
 )
 
-@router.post("/", response_model=schemas.UserBase, status_code=HTTPStatus.CREATED)
+@router.post("/", response_model=schemas.UserOut, status_code=HTTPStatus.CREATED)
 def create_user(user: schemas.UserBase, db: Session = Depends(get_session)):
     try:
        return users.create_user(db, user)
@@ -47,3 +47,8 @@ def read_user(user_id: int, db: Session = Depends(get_session)):
 def read_users(db: Session = Depends(get_session)):
     users_db = users.get_users(db)
     return {"users": users_db}
+
+
+@router.get("/{user_id}/ratings", response_model=list[schemas.RatingSchema])
+def get_ratings_by_user(user_id: int, db: Session = Depends(get_session)):
+    return ratings.get_ratings_by_user(db, user_id)

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from src.crud import movies
+from src.crud import movies, ratings
 from src.database import get_session
 from http import HTTPStatus
 from src import schemas
@@ -10,7 +10,7 @@ router = APIRouter(
   tags=["filmes"]
 )
 
-@router.post("/", response_model=schemas.MovieBase, status_code=HTTPStatus.CREATED)
+@router.post("/", response_model=schemas.MovieOut, status_code=HTTPStatus.CREATED)
 def create_movie(movie: schemas.MovieBase, db: Session = Depends(get_session)):
   try:
      return movies.create_movie(db, movie)
@@ -47,3 +47,7 @@ def read_movie(movie_id: int, db: Session = Depends(get_session)):
 def read_movies(db: Session = Depends(get_session)):
   movies_db = movies.get_movies(db)
   return {"movies": movies_db}
+
+@router.get("/{movie_id}/ratings", response_model=list[schemas.RatingSchema])
+def get_ratings_by_movie(movie_id: int, db: Session = Depends(get_session)):
+    return ratings.get_ratings_by_movie(db, movie_id)
