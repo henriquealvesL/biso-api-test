@@ -1,4 +1,4 @@
-fastapi==0.115.12
+fastapi[standard]==0.115.12
 alembic==1.15.2
 SQLAlchemy==2.0.40
 pytest==8.3.5
