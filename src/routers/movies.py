@@ -17,6 +17,17 @@ def create_movie(movie: schemas.MovieBase, db: Session = Depends(get_session)):
   except ValueError as e:
     raise HTTPException(status_code=404, detail=str(e))
   
+@router.post("/batch", status_code=HTTPStatus.CREATED)
+def create_movies_batch(
+    batch: schemas.MovieBatch,
+    db: Session = Depends(get_session)
+):
+    try:
+        created_movies = movies.bulk_create_movies(db, batch)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return created_movies
+  
 @router.put("/{movie_id}", response_model=schemas.MovieBase)
 def update_movie(movie_id: int, movie_update: schemas.MovieBase, db: Session = Depends(get_session)):
   try:

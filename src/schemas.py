@@ -20,6 +20,9 @@ class MovieOut(MovieBase):
 class MovieList(BaseModel):
   movies: list[MovieOut]
 
+class MovieBatch(BaseModel):
+  movies: list[MovieBase]
+
 class RatingSchema(BaseModel):
   user_id: int
   movie_id: int

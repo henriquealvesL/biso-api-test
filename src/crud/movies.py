@@ -16,6 +16,23 @@ def create_movie(db: Session, movie: schemas.MovieBase):
   db.refresh(db_movie)
   return db_movie
 
+def bulk_create_movies(db: Session, batch: schemas.MovieBatch):
+    req_titles = [movie.title.lower() for movie in batch.movies]
+    
+    duplicate_movies = db.query(models.Movie)\
+        .filter(func.lower(models.Movie.title).in_(req_titles))\
+        .all()
+    
+    if duplicate_movies:
+      duplicate_titles = [movie.title for movie in duplicate_movies]
+      raise ValueError(f"The following movies already exist: {', '.join(duplicate_titles)}")
+    
+    movies_data = [movie.model_dump() for movie in batch.movies]
+    db.bulk_insert_mappings(models.Movie, movies_data)
+    db.commit()
+    
+    return movies_data
+
 def update_movie(db: Session, movie_id: int, movie_update: schemas.MovieBase):
     db_movie = db.query(models.Movie).filter(models.Movie.id == movie_id).first()
     if not db_movie:
