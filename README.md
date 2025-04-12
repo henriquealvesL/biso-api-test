@@ -11,8 +11,13 @@ API RESTful para gerenciamento de filmes, usuários e sistema de recomendações
 
 ## Endpoints Principais
 
-- `GET /filmes`: Lista todos os filmes disponíveis.
-- `GET /filmes/{usuario_id}/recomendacoes`: Retorna recomendações personalizadas para o usuário especificado.
+- `POST /users/` - Cria um novo usuário.
+- `GET /users/` - Lista todos os usuários.
+- `POST /filmes/` - Cadastra um filme.
+- `POST /filmes/bulk` - Cadastra múltiplos filmes de uma vez.
+- `GET /filmes/` - Lista todos os filmes.
+- `POST /ratings/` - Avalia um filme.
+- `GET /filmes/{user_id}/recomendacoes` - Retorna recomendações personalizadas para um usuário.
 
 ## Tecnologias Utilizadas
 
