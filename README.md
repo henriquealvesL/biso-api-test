@@ -45,7 +45,11 @@ API RESTful para gerenciamento de filmes, usuários e sistema de recomendações
 
 4. **Banco de dados:**
 
-   O projeto está configurado para criar um banco de dados SQLite automaticamente ao rodar a aplicação pela primeira vez.
+Rode a migração para criar as tabelas com o seguinte comando:
+
+```bash
+  alembic upgrade head
+```
 
 5. **Rodar a aplicação:**
 
